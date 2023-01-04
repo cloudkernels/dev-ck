@@ -3,7 +3,7 @@ title = "Cloudkernels"
 theme = ["hugo-coder"]
 languageCode = "en"
 defaultContentLanguage = "en"
-paginate = 10
+paginate = 25
 pygmentsStyle = "bw"
 pygmentsCodeFences = true
 pygmentsCodeFencesGuessSyntax = true
@@ -26,7 +26,7 @@ avatarURL = "images/cloudkernels.png"
 dateFormat = "January 2, 2006"
 since = 2018 
 # Git Commit in Footer, uncomment the line below to enable it
-commit = "https://github.com/luizdepra/hugo-coder/tree/"
+commit = "https://github.com/luizdepra/hugo-coder"
 # Right To Left, shift content direction for languagues such as Arabic
 rtl = false
 # Specify light/dark colorscheme
@@ -70,8 +70,8 @@ customJS = []
 # serverURL = "analytics.example.com" # For cloud-hosting, use provided URL, e.g. example.matomo.cloud
 
 # If you want to use Google Tag Manager(https://analytics.google.com/) for analytics, add this section
-# [params.googleTagManager]
-# id = "gid"
+[params.googleTagManager]
+id = "G-TCMRD4RNTQ"
 
 # If you want to use Application Insights(https://azure.com/) for analytics, add this section
 # [params.applicationInsights]
@@ -154,10 +154,10 @@ name = "Blog"
 weight = 2
 url = "posts/"
 
-[[languages.en.menu.main]]
-name = "Projects"
-weight = 3
-url = "projects/"
+#[[languages.en.menu.main]]
+#name = "Projects"
+#weight = 3
+#url = "projects/"
 
 #[[languages.en.menu.main]]
 #name = "Contact us"

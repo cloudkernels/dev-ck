@@ -1,22 +1,8 @@
 ---
-title: "Remote FPGA acceleration"
-date: 2022-12-19T14:14:04+01:00
-draft: true
+title: "PYNQ-Z1 bringup"
+date: 2023-01-05T14:14:04+01:00
 ---
 
-
-
-Exposing hardware acceleration functionality remains a challenge [..]
-
-We will go through a brief description of the hardware and software components
-of this example, as well as the steps to reproduce the experiment. First, we
-give a brief description of the development board we are using. We describe the
-steps to bring up the board, install a linux distribution and verify that the
-board can execute a simple example. Then we install the vAccel software stack
-and run a local example. Finally, we run the same example remotely, using a
-client machine connected to the same network as our development board.
-
-## Hardware components
 
 The PYNQ-Z1 board is the hardware platform for the [PYNQ](https://pynq.io)
 open-source framework. It features a
@@ -34,6 +20,10 @@ text, so if you are interested in more details, have a look at the [Zynq
 Technical Reference
 manual](https://docs.xilinx.com/v/u/en-US/ug585-Zynq-7000-TRM).
 
+We will go through a brief description of the software components needed to
+bring up the board We describe the process to install a linux distribution and
+verify that the board can execute a simple example. 
+
 
 ## Software components
 
@@ -46,7 +36,8 @@ Bringing up the PYNQ-Z1 board is fairly straight-forward:
   kernel/modules and a generic rootfs of the preferred linux distro, using the
   tools you are most familiar with.
 
-We will go with **Option 2**, following the [guide](https://github.com/ikwzm/FPGA-SoC-Linux) provided by [Ichiro
+We will go with **Option 2**, following the
+[guide](https://github.com/ikwzm/FPGA-SoC-Linux) provided by [Ichiro
 Kawazome](https://github.com/ikwzm).
 
 ### Install a linux distribution on the PYNQ-Z1 board
@@ -385,21 +376,129 @@ cd ..
 
 
 
-
-
-
-
-
 ## Putting it all together
 
-TL;DR
-### Host
+Now that we have a working linux distro on the board, let's login and build a
+simple example. We will use [Ichiro](https://github.com/ikwzm)'s
+[example](https://github.com/ikwzm/FPGA-SoC-Linux-Example-1-PYNQ-Z1).
 
-### VM
+### Get the code
+
+First, let's get the code:
+
+```sh
+git clone FPGA-SoC-Linux-Example-1-PYNQ-Z1
+cd FPGA-SoC-Linux-Example-1-PYNQ-Z1
+```
+
+### Install to FPGA
+
+```sh
+sudo rake install
+dmesg
+```
+
+The output should be something like the following:
+
+```console
+# sudo rake install
+dtbocfg.rb --install uio_irq_sample --dts uio_irq_sample.dts
+<stdin>:22.13-27.20: Warning (unit_address_vs_reg): /fragment@1/__overlay__/pump-uio: node has a reg or ranges property, but no unit name
+<stdin>:9.13-41.4: Warning (avoid_unnecessary_addr_size): /fragment@1: unnecessary #address-cells/#size-cells without "ranges" or child "reg" property
+# dmesg
+[..]
+[1767436.795386] fpga_manager fpga0: writing pump_axi4.bin to Xilinx Zynq FPGA Manager
+[1767436.966789] OF: overlay: WARNING: memory leak will occur if overlay removed, property: /amba/fpga-region0/firmware-name
+[1767437.047568] fclkcfg amba:fclk0: driver version : 1.7.2
+[1767437.054395] fclkcfg amba:fclk0: device name    : amba:fclk0
+[1767437.060294] fclkcfg amba:fclk0: clock  name    : fclk0
+[1767437.066766] fclkcfg amba:fclk0: clock  rate    : 100000000
+[1767437.072665] fclkcfg amba:fclk0: clock  enabled : 1
+[1767437.077652] fclkcfg amba:fclk0: driver installed.
+[1767437.093380] u-dma-buf udmabuf4: driver version = 3.2.5
+[1767437.098701] u-dma-buf udmabuf4: major number   = 243
+[1767437.107763] u-dma-buf udmabuf4: minor number   = 0
+[1767437.113390] u-dma-buf udmabuf4: phys address   = 0x1f100000
+[1767437.119151] u-dma-buf udmabuf4: buffer size    = 1048576
+[1767437.128990] u-dma-buf amba:pump-udmabuf4: driver installed.
+[1767437.147643] u-dma-buf udmabuf5: driver version = 3.2.5
+[1767437.153475] u-dma-buf udmabuf5: major number   = 243
+[1767437.158803] u-dma-buf udmabuf5: minor number   = 1
+[1767437.164453] u-dma-buf udmabuf5: phys address   = 0x1f200000
+[1767437.170388] u-dma-buf udmabuf5: buffer size    = 1048576
+[1767437.175881] u-dma-buf amba:pump-udmabuf5: driver installed.
+```
+
+### Run the samples
+
+```console
+# ./sample1
+time = 0.006068 sec
+time = 0.006053 sec
+time = 0.006064 sec
+time = 0.006040 sec
+time = 0.006060 sec
+time = 0.006052 sec
+time = 0.006061 sec
+time = 0.006077 sec
+time = 0.006019 sec
+time = 0.006048 sec
+```
+
+```console
+# ./sample2
+time = 0.006066 sec
+time = 0.006052 sec
+time = 0.006050 sec
+time = 0.006068 sec
+time = 0.006165 sec
+time = 0.006120 sec
+time = 0.006079 sec
+time = 0.006088 sec
+time = 0.006101 sec
+time = 0.006090 sec
+```
+
+```console
+# python3 ./sample.py 
+elapsed_time:6.238[msec]
+elapsed_time:6.284[msec]
+elapsed_time:6.229[msec]
+elapsed_time:6.24[msec]
+elapsed_time:6.195[msec]
+elapsed_time:6.279[msec]
+elapsed_time:6.223[msec]
+elapsed_time:6.2[msec]
+elapsed_time:6.216[msec]
+average_time:6.234[msec]
+thougput    :168.21[MByte/sec]
+udmabuf4 == udmabuf5 : OK
+```
+
+**Note**
+You might find useful to browse through the [udmabuf
+repo](https://github.com/ikwzm/udmabuf). The samples above use `udmabuf4` &
+`udmabuf5`, but more elaborate examples could make use of other
+source/destination buffers (eg `udmabuf0` or `udmabuf1`). To enable these,
+remember to remove the module and re-load it, specifying the relevant buffers:
+
+```sh
+rmmod u_dma_buf
+modprobe u_dma_buf udmabuf0=$[ 2 * 1048576 ] udmabuf1=$[ 2* 1048576] udmabuf2=$[ 2 * 1048576 ]  udmabuf3=$[ 2 * 1048576 ]
+```
+
+## Simple Vector operation examples
+
+To demonstrate the added value of running on the FPGA fabric, we use simple
+vector operation examples, such as vector add, matrix-to-matrix multiplication
+etc.
+
+The code can be found at [github](https://github.com/nubificus/pynq_fpga_samples).
 
 
 ## Future steps
 
-Give us a shout at team@cloudkernels.net if you liked it, or visit the
-[vAccel][vaccel] website and drop us a note at vaccel@nubificus.co.uk for more
-info!
+Give us a shout at team@cloudkernels.net if you liked it! The plan is to use
+this board to expose acceleration functionality over the network with
+[vAccel](https://vaccel.org). Stay tuned for the next post where we describe
+how we did it!

@@ -3,7 +3,7 @@ title: "Kata Containers: Build and configure Firecracker"
 date: 2022-03-28T19:33:29Z
 ---
 
-Picking up from where we left in our [previous post](https://blog.cloudkernels.net/posts/kata-build-source), we will now install AWS Firecracker and configure Kata Containers to use it as their hypervisor.
+Picking up from where we left in our [previous post](/posts/kata-build-source), we will now install AWS Firecracker and configure Kata Containers to use it as their hypervisor.
 
 ### Build Firecracker
 
@@ -190,7 +190,7 @@ sudo systemctl start devmapper_reload.service
 
 ### Configure Kata Containers to use Firecracker
 
-Next, we need to install the Kata Containers-Firecracker configuration file. We will use this file to configure Kata Containers to use the rootfs image we built in our [previous post](https://blog.cloudkernels.net/posts/kata-build-source).
+Next, we need to install the Kata Containers-Firecracker configuration file. We will use this file to configure Kata Containers to use the rootfs image we built in our [previous post](/posts/kata-build-source).
 
 ```bash
 sudo mkdir -p /opt/kata/configs

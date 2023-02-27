@@ -284,7 +284,7 @@ lrwxrwxrwx 1 root root    23 Μαρ  25 15:32 configuration.toml -> configuratio
 Now, we need to install a hypervisor (eg QEMU or Firecracker) and configure
 Kata Containers and containerd accordingly.  In our upcoming posts we will go
 through the process of building and configuring both
-[QEMU](https://cloudkernels.github.io/posts/kata-build-configure-qemu/) and
+[QEMU](/posts/kata-build-configure-qemu/) and
 [AWS
-Firecracker](https://cloudkernels.github.io/posts/kata-build-configure-fc/) for
+Firecracker](/posts/kata-build-configure-fc/) for
 x86 and arm64 hosts. Happy hacking!

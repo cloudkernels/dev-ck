@@ -5,7 +5,7 @@ draft: false
 ---
 
 Picking up from where we left in our [previous
-post](https://blog.cloudkernels.net/posts/kata-build-source), we will now
+post](/posts/kata-build-source), we will now
 install QEMU and configure Kata Containers to use QEMU as their hypervisor.
 
 ### Build QEMU

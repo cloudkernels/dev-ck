@@ -7,6 +7,7 @@ Picking up from where we left in our [previous post](https://blog.cloudkernels.n
 
 ### Build Firecracker
 
+
 Kata Containers only support AWS Firecracker v0.23.1
 ([yet](https://github.com/kata-containers/kata-containers/pull/1519)). To build
 Firecracker, we will clone the Github repo and checkout to the 0.23.1 version:
@@ -16,6 +17,17 @@ git clone https://github.com/firecracker-microvm/firecracker.git -b v0.23.1 --de
   cd firecracker &&\
   git submodule update --init
 ```
+
+**UPDATE**: Tue Feb 21 16:43:47 UTC 2023: As of
+[kata-containers#4735](https://github.com/kata-containers/kata-containers/pull/4735),
+the kata go runtime supports AWS Firecracker v1.1.0. So you can use the following command:
+
+```bash
+git clone https://github.com/firecracker-microvm/firecracker.git -b v1.1.0 --depth 1 &&\
+  cd firecracker &&\
+  git submodule update --init
+```
+
 
 Now we can build the binaries:
 
